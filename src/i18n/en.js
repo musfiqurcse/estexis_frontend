@@ -102,6 +102,9 @@ export const en = {
     terms: "Terms & Conditions",
     imprint: "Imprint",
     impressum: "Impressum",
+    mobileApps: "Mobile Apps",
+    iosApp: "📱 iOS – Coming soon",
+    androidApp: "🤖 Android – Coming soon",
   },
   legal: {
     terms: {

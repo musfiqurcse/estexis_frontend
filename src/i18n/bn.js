@@ -6,7 +6,7 @@ export const bn = {
     details: { amenities: "সুবিধা", description: "এই প্রপার্টি সম্পর্কে", host: "লিস্ট করেছেন", similar: "একই ধরনের প্রপার্টি", availability: "ক্রয় খরচের হিসাব", serviceFee: "ক্লোজিং কস্ট (আনুমানিক)", cleaningFee: "রেজিস্ট্রেশন ফি" },
     booking: { title: "ক্রয় ইনকোয়ারি পাঠান", summary: "ক্রয় সারাংশ", guestInfo: "ক্রেতার তথ্য", firstName: "নামের প্রথম অংশ", lastName: "নামের শেষ অংশ", email: "ইমেইল", phone: "ফোন নম্বর", payment: "ফাইন্যান্সিং অবস্থা", card: "প্রি-অ্যাপ্রুভাল: যাচাইকৃত", confirmation: "ইনকোয়ারি পাঠানো হয়েছে", confirmationText: "আপনার ক্রয় ইনকোয়ারি সংরক্ষিত হয়েছে, রেফারেন্স", viewDashboard: "ইনকোয়ারি দেখুন" },
     dashboard: { title: "আপনার বায়ার ড্যাশবোর্ড", bookings: "আমার ইনকোয়ারি", saved: "সংরক্ষিত প্রপার্টি", profile: "প্রোফাইল", active: "সক্রিয়", reviewing: "পর্যালোচনায়", closed: "বন্ধ" },
-    footer: { text: "সম্পত্তি আবিষ্কার করুন। নিশ্চিত করে বন্ধ করুন।", company: "কোম্পানি", support: "সাপোর্ট", privacy: "প্রাইভেসি পলিসি", terms: "টার্মস ও কন্ডিশন", imprint: "ইমপ্রিন্ট", impressum: "ইমপ্রেসাম" },
+    footer: { text: "সম্পত্তি আবিষ্কার করুন। নিশ্চিত করে বন্ধ করুন।", company: "কোম্পানি", support: "সাপোর্ট", privacy: "প্রাইভেসি পলিসি", terms: "টার্মস ও কন্ডিশন", imprint: "ইমপ্রিন্ট", impressum: "ইমপ্রেসাম", mobileApps: "মোবাইল অ্যাপস", iosApp: "📱 iOS – শীঘ্রই আসছে", androidApp: "🤖 Android – শীঘ্রই আসছে" },
     legal: {
         terms: {
             title: "টার্মস ও কন্ডিশন",

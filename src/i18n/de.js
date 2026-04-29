@@ -6,7 +6,7 @@ export const de = {
     details: { amenities: "Ausstattung", description: "Ueber diese Immobilie", host: "Angeboten von", similar: "Aehnliche Immobilien", availability: "Kostenschaetzung", serviceFee: "Schaetzung Abschlusskosten", cleaningFee: "Grundbuch-/Registrierungsgebuehr" },
     booking: { title: "Kaufanfrage senden", summary: "Kaufuebersicht", guestInfo: "Kaeuferinformationen", firstName: "Vorname", lastName: "Nachname", email: "E-Mail-Adresse", phone: "Telefonnummer", payment: "Finanzierungsstatus", card: "Vorpruefung: Verifiziert", confirmation: "Anfrage gesendet", confirmationText: "Deine Kaufanfrage wurde gespeichert mit Referenz", viewDashboard: "Anfragen ansehen" },
     dashboard: { title: "Dein Kaeufer-Dashboard", bookings: "Meine Anfragen", saved: "Gespeicherte Objekte", profile: "Profil", active: "Aktiv", reviewing: "In Pruefung", closed: "Abgeschlossen" },
-    footer: { text: "Immobilien entdecken. Mit Sicherheit abschliessen.", company: "Unternehmen", support: "Support", privacy: "Datenschutzrichtlinie", terms: "AGB", imprint: "Imprint", impressum: "Impressum" },
+    footer: { text: "Immobilien entdecken. Mit Sicherheit abschliessen.", company: "Unternehmen", support: "Support", privacy: "Datenschutzrichtlinie", terms: "AGB", imprint: "Imprint", impressum: "Impressum", mobileApps: "Mobile Apps", iosApp: "📱 iOS – Demnächst verfügbar", androidApp: "🤖 Android – Demnächst verfügbar" },
     legal: {
         terms: {
             title: "AGB",

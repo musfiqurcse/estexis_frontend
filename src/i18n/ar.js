@@ -6,7 +6,7 @@ export const ar = {
     details: { amenities: "المرافق", description: "عن هذا العقار", host: "أدرجه", similar: "عقارات مشابهة", availability: "تقدير تكلفة الشراء", serviceFee: "تقدير تكاليف الإغلاق", cleaningFee: "رسوم التسجيل" },
     booking: { title: "إرسال استفسار شراء", summary: "ملخص الشراء", guestInfo: "معلومات المشتري", firstName: "الاسم الأول", lastName: "اسم العائلة", email: "البريد الإلكتروني", phone: "رقم الهاتف", payment: "حالة التمويل", card: "موافقة مبدئية: موثقة", confirmation: "تم إرسال الاستفسار", confirmationText: "تم حفظ استفسار الشراء بالمرجع", viewDashboard: "عرض الاستفسارات" },
     dashboard: { title: "لوحة المشتري", bookings: "استفساراتي", saved: "العقارات المحفوظة", profile: "الملف الشخصي", active: "نشط", reviewing: "قيد المراجعة", closed: "مغلق" },
-    footer: { text: "اكتشف العقارات. أتمم بثقة.", company: "الشركة", support: "الدعم", privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", imprint: "بيانات النشر", impressum: "إمبريسوم" },
+    footer: { text: "اكتشف العقارات. أتمم بثقة.", company: "الشركة", support: "الدعم", privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", imprint: "بيانات النشر", impressum: "إمبريسوم", mobileApps: "تطبيقات الهاتف", iosApp: "📱 iOS – قريباً", androidApp: "🤖 Android – قريباً" },
     legal: {
         terms: {
             title: "الشروط والأحكام",
