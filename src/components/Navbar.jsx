@@ -1,12 +1,14 @@
 import { Heart, MapPin, Menu, User } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "../i18n";
+import { useVisitorLocation } from "../hooks/useVisitorLocation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 // import mainLogo from "../assets/main_logo.svg";
 import mainLogo from "../assets/Layer_1.svg";
 
 export function Navbar() {
   const { t } = useTranslation();
+  const { city, loading } = useVisitorLocation();
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-linen/95 backdrop-blur">
@@ -18,12 +20,15 @@ export function Navbar() {
           <NavLink to="/properties" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
             {t("nav.homes")}
           </NavLink>
+          <NavLink to="/blog" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
+            Blog
+          </NavLink>
           <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
             {t("nav.dashboard")}
           </NavLink>
           <span className="flex items-center gap-1 text-ink/70">
             <MapPin className="h-4 w-4" aria-hidden="true" />
-            {t("nav.location")}
+            {loading ? <span className="w-12 animate-pulse rounded bg-ink/10 h-3" /> : city}
           </span>
         </div>
         <div className="flex items-center gap-2">
