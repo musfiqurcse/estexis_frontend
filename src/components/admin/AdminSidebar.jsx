@@ -19,12 +19,16 @@ const navLinks = [
   { to: "#settings", label: "Settings", icon: Settings },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ isOpen, onClose }) {
   const { logout } = useAdminAuth();
   const location = useLocation();
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-white border-r border-gray-100">
+    <aside
+      className={`fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-white border-r border-gray-100 transition-transform duration-200 lg:translate-x-0 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
       <div className="flex h-16 items-center px-5 border-b border-gray-100">
         <span className="text-xs font-semibold tracking-widest uppercase text-gray-300">
           grihoo
@@ -41,6 +45,7 @@ export function AdminSidebar() {
             <a
               key={label}
               href={to}
+              onClick={onClose}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-gray-900 text-white"

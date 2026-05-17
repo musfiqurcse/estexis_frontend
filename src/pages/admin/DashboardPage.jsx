@@ -9,16 +9,18 @@ import { InquiriesTable } from "../../components/admin/widgets/InquiriesTable";
 import { NotificationsPanel } from "../../components/admin/widgets/NotificationsPanel";
 import { QuickAddForm } from "../../components/admin/widgets/QuickAddForm";
 import { useBlog } from "../../context/BlogContext";
+import { useTranslation } from "../../i18n";
 
 const statsCards = [
   { label: "Page Views", value: "12,480", change: 8.2, icon: Eye },
   { label: "Active Inquiries", value: "34", change: 3.1, icon: FileText },
   { label: "Listed Properties", value: "4", change: 0, icon: Building2 },
-  { label: "Est. Revenue", value: "€990,000", change: 12.4, icon: TrendingUp },
+  { label: "Est. Revenue", value: 990000, change: 12.4, icon: TrendingUp, currency: true },
 ];
 
 export function AdminDashboardPage() {
   const { posts: blogPosts } = useBlog();
+  const { formatCurrency } = useTranslation();
 
   return (
     <AdminLayout title="Overview">
@@ -26,7 +28,7 @@ export function AdminDashboardPage() {
         {/* Row 1: Stats cards */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {statsCards.map((card) => (
-            <StatsCard key={card.label} {...card} />
+            <StatsCard key={card.label} {...card} value={card.currency ? formatCurrency(card.value) : card.value} />
           ))}
         </div>
 

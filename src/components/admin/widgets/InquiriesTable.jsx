@@ -1,3 +1,5 @@
+import { useTranslation } from "../../../i18n";
+
 const inquiries = [
   {
     id: "INQ-2049",
@@ -50,6 +52,8 @@ function StatusBadge({ status }) {
 }
 
 export function InquiriesTable() {
+  const { formatCurrency } = useTranslation();
+
   return (
     <div className="rounded-xl border border-gray-100 bg-white overflow-hidden">
       <div className="border-b border-gray-100 p-5">
@@ -92,7 +96,7 @@ export function InquiriesTable() {
                 <td className="hidden p-4 text-gray-500 md:table-cell">{inq.buyer}</td>
                 <td className="hidden p-4 text-gray-400 sm:table-cell">{inq.date}</td>
                 <td className="p-4 text-right font-semibold text-gray-900">
-                  €{inq.value.toLocaleString()}
+                  {formatCurrency(inq.value)}
                 </td>
                 <td className="p-4 text-right">
                   <StatusBadge status={inq.status} />

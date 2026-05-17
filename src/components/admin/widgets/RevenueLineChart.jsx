@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "../../../i18n";
 
 const data = [
   { month: "Jul", revenue: 164000 },
@@ -19,6 +20,8 @@ const data = [
 ];
 
 export function RevenueLineChart() {
+  const { formatCurrency, formatNumber, convertCurrencyValue } = useTranslation();
+
   return (
     <div className="rounded-xl border border-gray-100 bg-white p-5">
       <h2 className="text-sm font-semibold text-gray-900">Monthly Revenue</h2>
@@ -37,10 +40,10 @@ export function RevenueLineChart() {
               tick={{ fontSize: 11, fill: "#9ca3af" }}
               axisLine={false}
               tickLine={false}
-              tickFormatter={(v) => `€${v / 1000}k`}
+              tickFormatter={(v) => `${formatNumber(Math.round(convertCurrencyValue(v) / 1000))}k`}
             />
             <Tooltip
-              formatter={(value) => [`€${value.toLocaleString()}`, "Revenue"]}
+              formatter={(value) => [formatCurrency(value), "Revenue"]}
               contentStyle={{
                 border: "1px solid #e5e7eb",
                 borderRadius: 8,

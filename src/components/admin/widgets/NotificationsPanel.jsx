@@ -41,7 +41,7 @@ export function NotificationsPanel() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-gray-100 bg-white">
+    <div className="flex flex-col rounded-xl border border-gray-100 bg-white max-h-64 lg:max-h-none lg:h-full">
       <div className="flex items-center justify-between border-b border-gray-100 p-5">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-semibold text-gray-900">Notifications</h2>

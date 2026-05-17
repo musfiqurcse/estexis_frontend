@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { useTranslation } from "../../../i18n";
 
 const initialForm = { title: "", location: "", price: "", type: "apartments" };
 
 export function QuickAddForm() {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const { currencySymbols } = useTranslation();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -44,11 +46,11 @@ export function QuickAddForm() {
             onChange={set("location")}
             required
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <input
               className="input-field"
               type="number"
-              placeholder="Price (€)"
+              placeholder={`Price (${currencySymbols.EUR})`}
               value={form.price}
               onChange={set("price")}
               required

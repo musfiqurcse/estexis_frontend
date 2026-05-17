@@ -2,6 +2,7 @@ import { Heart, MapPin, Menu, User } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { useVisitorLocation } from "../hooks/useVisitorLocation";
+import { CurrencySwitcher } from "./CurrencySwitcher";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 // import mainLogo from "../assets/main_logo.svg";
 import mainLogo from "../assets/Layer_1.svg";
@@ -32,6 +33,7 @@ export function Navbar() {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          <CurrencySwitcher />
           <LanguageSwitcher />
           <Link to="/dashboard" className="hidden btn-secondary sm:inline-flex">
             <Heart className="h-4 w-4" aria-hidden="true" />
