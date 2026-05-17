@@ -226,3 +226,7 @@ export function banAdminUser(userId, reason) {
     body: { reason },
   });
 }
+
+export function deleteAdminUser(userId) {
+  return adminRequest(`/api/v1/admin/users/${userId}`, { method: "DELETE" });
+}

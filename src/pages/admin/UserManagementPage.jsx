@@ -7,12 +7,14 @@ import {
   PlusCircle,
   RefreshCw,
   ShieldAlert,
+  Trash2,
   UserCog,
 } from "lucide-react";
 import { AdminLayout } from "../../components/admin/AdminLayout";
 import {
   banAdminUser,
   createAdminUser,
+  deleteAdminUser,
   getAdminUser,
   listAdminUsers,
   suspendAdminUser,
@@ -77,6 +79,7 @@ export function UserManagementPage() {
   const [reasonAction, setReasonAction] = useState("");
   const [reason, setReason] = useState("");
   const [confirmUnsuspendOpen, setConfirmUnsuspendOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const totalPages = useMemo(() => Math.max(1, Math.ceil((users.total || 0) / (users.size || 20))), [users]);
 
@@ -180,6 +183,26 @@ export function UserManagementPage() {
       await refreshAfterAction("User unsuspended.");
     } catch (apiError) {
       setError(apiError.message || "Unable to unsuspend user.");
+    } finally {
+      setActionLoading("");
+    }
+  }
+
+  async function handleDeleteUser() {
+    if (!selectedId) return;
+    setActionLoading("delete");
+    setError("");
+    setNotice("");
+
+    try {
+      await deleteAdminUser(selectedId);
+      setConfirmDeleteOpen(false);
+      setSelectedId(null);
+      setSelectedUser(null);
+      setNotice("User deleted.");
+      await loadUsers(page);
+    } catch (apiError) {
+      setError(apiError.message || "Unable to delete user.");
     } finally {
       setActionLoading("");
     }
@@ -317,7 +340,7 @@ export function UserManagementPage() {
                   <DetailRow label="Updated" value={formatDate(selectedUser.updated_at)} />
                 </div>
 
-                <div className="grid gap-3 border-t border-gray-100 pt-5 sm:grid-cols-3">
+                <div className="grid gap-3 border-t border-gray-100 pt-5 sm:grid-cols-2">
                   <button className="btn-secondary px-3 text-orange-600 hover:border-orange-200 hover:text-orange-700" onClick={() => setReasonAction("suspend")} disabled={Boolean(actionLoading)}>
                     <ShieldAlert className="h-4 w-4" />
                     Suspend
@@ -329,6 +352,10 @@ export function UserManagementPage() {
                   <button className="btn-secondary px-3 text-red-600 hover:border-red-200 hover:text-red-700" onClick={() => setReasonAction("ban")} disabled={Boolean(actionLoading)}>
                     <Ban className="h-4 w-4" />
                     Ban
+                  </button>
+                  <button className="btn-secondary px-3 text-red-700 hover:border-red-200 hover:text-red-800 sm:col-span-2" onClick={() => setConfirmDeleteOpen(true)} disabled={Boolean(actionLoading)}>
+                    <Trash2 className="h-4 w-4" />
+                    Delete
                   </button>
                 </div>
               </div>
@@ -412,6 +439,26 @@ export function UserManagementPage() {
               <button type="button" className="btn-primary" onClick={handleUnsuspend} disabled={Boolean(actionLoading)}>
                 {actionLoading === "unsuspend" ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
                 Unsuspend
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDeleteOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
+            <h3 className="text-base font-semibold text-gray-900">Delete user</h3>
+            <p className="mt-1 text-sm text-gray-400">
+              This will delete {selectedUser?.email || "this user"}. This action cannot be undone from the admin UI.
+            </p>
+            <div className="mt-5 flex justify-end gap-3">
+              <button type="button" className="btn-secondary" onClick={() => setConfirmDeleteOpen(false)} disabled={Boolean(actionLoading)}>
+                Cancel
+              </button>
+              <button type="button" className="btn-primary bg-red-600 hover:bg-red-700" onClick={handleDeleteUser} disabled={Boolean(actionLoading)}>
+                {actionLoading === "delete" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                Delete
               </button>
             </div>
           </div>
