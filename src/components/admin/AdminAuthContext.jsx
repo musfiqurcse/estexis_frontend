@@ -1,33 +1,59 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  clearAdminSession,
+  getStoredAdminSession,
+  loginAdmin,
+  logoutAdmin,
+  setUnauthorizedHandler,
+  storeAdminSession,
+} from "../../lib/adminApi";
 
 const AdminAuthContext = createContext(null);
 
-const STORAGE_KEY = "admin_auth_token";
-const VALID_TOKEN = "grihoo_admin_session_v1";
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "grihoo@admin";
-
 export function AdminAuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => localStorage.getItem(STORAGE_KEY) === VALID_TOKEN
-  );
+  const [session, setSession] = useState(getStoredAdminSession);
+  const isAuthenticated = Boolean(session.accessToken);
 
-  function login(username, password) {
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-      localStorage.setItem(STORAGE_KEY, VALID_TOKEN);
-      setIsAuthenticated(true);
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      clearAdminSession();
+      setSession({ accessToken: null, refreshToken: null, user: null });
+    });
+
+    return () => setUnauthorizedHandler(null);
+  }, []);
+
+  async function login(email, password) {
+    try {
+      const response = await loginAdmin(email, password);
+      if (response?.user?.role !== "admin") {
+        clearAdminSession();
+        return { success: false, error: "This account does not have admin access." };
+      }
+
+      storeAdminSession(response);
+      setSession({
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+        user: response.user,
+      });
       return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message || "Unable to sign in." };
     }
-    return { success: false, error: "Invalid username or password." };
   }
 
   function logout() {
-    localStorage.removeItem(STORAGE_KEY);
-    setIsAuthenticated(false);
+    const refreshToken = getStoredAdminSession().refreshToken;
+    clearAdminSession();
+    setSession({ accessToken: null, refreshToken: null, user: null });
+    logoutAdmin(refreshToken).catch(() => {});
   }
 
+  const value = useMemo(() => ({ isAuthenticated, user: session.user, login, logout }), [isAuthenticated, session.user]);
+
   return (
-    <AdminAuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AdminAuthContext.Provider value={value}>
       {children}
     </AdminAuthContext.Provider>
   );

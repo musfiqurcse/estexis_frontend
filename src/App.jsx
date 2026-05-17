@@ -5,6 +5,8 @@ import { ProtectedAdminRoute } from "./components/admin/ProtectedAdminRoute";
 import { AdminLoginPage } from "./pages/admin/LoginPage";
 import { AdminDashboardPage } from "./pages/admin/DashboardPage";
 import { AdminBlogPage } from "./pages/admin/BlogPage";
+import { KycReviewPage } from "./pages/admin/KycReviewPage";
+import { UserManagementPage } from "./pages/admin/UserManagementPage";
 import { BlogListPage } from "./pages/BlogListPage";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
 import { BookingPage } from "./pages/BookingPage";
@@ -38,6 +40,8 @@ export default function App() {
         <Route path="login" element={<AdminLoginPage />} />
         <Route element={<ProtectedAdminRoute />}>
           <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="users" element={<UserManagementPage />} />
+          <Route path="kyc" element={<KycReviewPage />} />
           <Route path="blog" element={<AdminBlogPage />} />
         </Route>
       </Route>

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Building2,
@@ -7,11 +7,15 @@ import {
   BarChart2,
   Settings,
   LogOut,
+  ShieldCheck,
+  UserCog,
 } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 
 const navLinks = [
   { to: "/private/admin/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/private/admin/users", label: "User Management", icon: UserCog },
+  { to: "/private/admin/kyc", label: "KYC Reviews", icon: ShieldCheck },
   { to: "#properties", label: "Properties", icon: Building2 },
   { to: "#inquiries", label: "Inquiries", icon: FileText },
   { to: "/private/admin/blog", label: "Blog Content", icon: Newspaper },
@@ -20,7 +24,7 @@ const navLinks = [
 ];
 
 export function AdminSidebar({ isOpen, onClose }) {
-  const { logout } = useAdminAuth();
+  const { logout, user } = useAdminAuth();
   const location = useLocation();
 
   return (
@@ -41,20 +45,26 @@ export function AdminSidebar({ isOpen, onClose }) {
       <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
         {navLinks.map(({ to, label, icon: Icon }) => {
           const isActive = location.pathname === to;
+          const className = `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+            isActive
+              ? "bg-gray-900 text-white"
+              : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+          }`;
+
+          if (to.startsWith("#")) {
+            return (
+              <a key={label} href={to} onClick={onClose} className={className}>
+                <Icon className="h-4 w-4 flex-shrink-0" />
+                {label}
+              </a>
+            );
+          }
+
           return (
-            <a
-              key={label}
-              href={to}
-              onClick={onClose}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-            >
+            <Link key={label} to={to} onClick={onClose} className={className}>
               <Icon className="h-4 w-4 flex-shrink-0" />
               {label}
-            </a>
+            </Link>
           );
         })}
       </nav>
@@ -66,7 +76,7 @@ export function AdminSidebar({ isOpen, onClose }) {
           </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-gray-900 truncate">Admin</p>
-            <p className="text-xs text-gray-400 truncate">grihoo.com</p>
+            <p className="text-xs text-gray-400 truncate">{user?.email || "grihoo.com"}</p>
           </div>
         </div>
         <button

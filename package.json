@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node -e \"console.error('Use npm run build:stage or npm run build:production so the correct Secrets/.env.* file is loaded.'); process.exit(1)\"",
+    "build:stage": "vite build --mode stage",
+    "build:production": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {

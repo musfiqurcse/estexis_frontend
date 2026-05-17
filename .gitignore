@@ -17,6 +17,10 @@ dist-ssr/
 .env
 .env.local
 .env.*.local
+!Secrets/.env
+!Secrets/.env.example
+!Secrets/.env.stage
+!Secrets/.env.production
 
 # IDE
 .vscode/

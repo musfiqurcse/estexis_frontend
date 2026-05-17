@@ -5,7 +5,7 @@ import { useAdminAuth } from "../../components/admin/AdminAuthContext";
 export function AdminLoginPage() {
   const { isAuthenticated, login } = useAdminAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,11 +14,11 @@ export function AdminLoginPage() {
     return <Navigate to="/private/admin/dashboard" replace />;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const result = login(username.trim(), password);
+    const result = await login(email.trim(), password);
     setLoading(false);
     if (result.success) {
       navigate("/private/admin/dashboard", { replace: true });
@@ -40,15 +40,15 @@ export function AdminLoginPage() {
         <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Username
+              Email
             </label>
             <input
-              type="text"
+              type="email"
               className="input-field"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               autoFocus
-              autoComplete="username"
+              autoComplete="email"
               required
             />
           </div>
