@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Eye, FileText, Building2, TrendingUp, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AdminLayout } from "../../components/admin/AdminLayout";
@@ -8,7 +9,7 @@ import { StatusPieChart } from "../../components/admin/widgets/StatusPieChart";
 import { InquiriesTable } from "../../components/admin/widgets/InquiriesTable";
 import { NotificationsPanel } from "../../components/admin/widgets/NotificationsPanel";
 import { QuickAddForm } from "../../components/admin/widgets/QuickAddForm";
-import { useBlog } from "../../context/BlogContext";
+import { listAdminBlogPosts } from "../../lib/adminApi";
 import { useTranslation } from "../../i18n";
 
 const statsCards = [
@@ -19,8 +20,12 @@ const statsCards = [
 ];
 
 export function AdminDashboardPage() {
-  const { posts: blogPosts } = useBlog();
+  const [blogPosts, setBlogPosts] = useState([]);
   const { formatCurrency } = useTranslation();
+
+  useEffect(() => {
+    listAdminBlogPosts().then(setBlogPosts).catch(() => {});
+  }, []);
 
   return (
     <AdminLayout title="Overview">
@@ -75,19 +80,18 @@ export function AdminDashboardPage() {
                   <p className="truncate text-sm font-medium text-gray-900">
                     {post.title}
                   </p>
-                  <p className="mt-0.5 text-xs text-gray-400">{post.date}</p>
+                  <p className="mt-0.5 text-xs text-gray-400">{post.published_at ? new Date(post.published_at).toLocaleDateString() : "Draft"}</p>
                 </div>
                 <span
                   className={`flex-shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                     post.status === "published"
                       ? "bg-emerald-50 text-emerald-700"
+                      : post.status === "rejected"
+                      ? "bg-red-50 text-red-600"
                       : "bg-gray-100 text-gray-500"
                   }`}
                 >
                   {post.status}
-                </span>
-                <span className="w-20 flex-shrink-0 text-right text-xs text-gray-400">
-                  {post.views > 0 ? `${post.views.toLocaleString()} views` : "—"}
                 </span>
               </li>
             ))}

@@ -230,3 +230,44 @@ export function banAdminUser(userId, reason) {
 export function deleteAdminUser(userId) {
   return adminRequest(`/api/v1/admin/users/${userId}`, { method: "DELETE" });
 }
+
+export function listAdminBlogPosts() {
+  return adminRequest("/api/v1/admin/blog");
+}
+
+export function getAdminBlogPost(postId) {
+  return adminRequest(`/api/v1/admin/blog/${postId}`);
+}
+
+export function generateBlogPost(prompt, language = "english") {
+  return adminRequest("/api/v1/admin/blog/generate", {
+    method: "POST",
+    body: { prompt, language },
+  });
+}
+
+export function updateBlogPost(postId, data) {
+  return adminRequest(`/api/v1/admin/blog/${postId}`, {
+    method: "PUT",
+    body: data,
+  });
+}
+
+export function deleteBlogPost(postId) {
+  return adminRequest(`/api/v1/admin/blog/${postId}`, { method: "DELETE" });
+}
+
+export function publishBlogPost(postId, share_to_facebook = true) {
+  return adminRequest(`/api/v1/admin/blog/${postId}/publish`, {
+    method: "PATCH",
+    body: { share_to_facebook },
+  });
+}
+
+export function unpublishBlogPost(postId) {
+  return adminRequest(`/api/v1/admin/blog/${postId}/unpublish`, { method: "PATCH" });
+}
+
+export function rejectBlogPost(postId) {
+  return adminRequest(`/api/v1/admin/blog/${postId}/reject`, { method: "PATCH" });
+}

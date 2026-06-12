@@ -2,25 +2,17 @@ import { useState } from "react";
 
 const EMPTY = {
   title: "",
-  excerpt: "",
-  body: "",
-  coverImage: "",
-  author: "Grihoo Editorial",
-  tagsInput: "",
-  date: new Date().toISOString().slice(0, 10),
-  status: "draft",
+  slug: "",
+  ai_summary: "",
+  content: "",
 };
 
 function fromPost(post) {
   return {
-    title: post.title,
-    excerpt: post.excerpt,
-    body: post.body,
-    coverImage: post.coverImage || "",
-    author: post.author,
-    tagsInput: post.tags.join(", "),
-    date: post.date,
-    status: post.status,
+    title: post.title || "",
+    slug: post.slug || "",
+    ai_summary: post.ai_summary || "",
+    content: post.content || "",
   };
 }
 
@@ -33,11 +25,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const tags = form.tagsInput
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    onSave({ ...form, tags });
+    onSave({ ...form });
   }
 
   return (
@@ -57,108 +45,46 @@ export function BlogEditor({ post, onSave, onCancel }) {
 
       <div>
         <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Excerpt
+          Slug
+        </label>
+        <input
+          className="input-field"
+          placeholder="url-friendly-slug"
+          value={form.slug}
+          onChange={set("slug")}
+        />
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
+          Summary
         </label>
         <textarea
           className="input-field resize-none"
           rows={2}
           placeholder="Short summary shown on the blog list page"
-          value={form.excerpt}
-          onChange={set("excerpt")}
-          required
+          value={form.ai_summary}
+          onChange={set("ai_summary")}
         />
       </div>
 
       <div>
         <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Body
+          Content
         </label>
         <textarea
           className="input-field resize-y"
-          rows={10}
+          rows={12}
           placeholder={"Write the full post here.\n\nSeparate paragraphs with a blank line."}
-          value={form.body}
-          onChange={set("body")}
+          value={form.content}
+          onChange={set("content")}
           required
         />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Cover Image URL
-          </label>
-          <input
-            className="input-field"
-            placeholder="https://images.unsplash.com/..."
-            value={form.coverImage}
-            onChange={set("coverImage")}
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Author
-          </label>
-          <input
-            className="input-field"
-            placeholder="Author name"
-            value={form.author}
-            onChange={set("author")}
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Tags (comma-separated)
-          </label>
-          <input
-            className="input-field"
-            placeholder="Berlin, Buying Guide, Germany"
-            value={form.tagsInput}
-            onChange={set("tagsInput")}
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Date
-          </label>
-          <input
-            type="date"
-            className="input-field"
-            value={form.date}
-            onChange={set("date")}
-            required
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Status
-        </label>
-        <div className="flex items-center gap-4">
-          {["draft", "published"].map((s) => (
-            <label key={s} className="flex cursor-pointer items-center gap-2 text-sm">
-              <input
-                type="radio"
-                name="status"
-                value={s}
-                checked={form.status === s}
-                onChange={set("status")}
-                className="accent-[#164b3f]"
-              />
-              <span className="capitalize text-gray-700">{s}</span>
-            </label>
-          ))}
-        </div>
       </div>
 
       <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
         <button type="submit" className="btn-primary">
-          {post ? "Update Post" : "Create Post"}
+          Save Changes
         </button>
         <button type="button" onClick={onCancel} className="btn-secondary">
           Cancel
