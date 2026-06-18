@@ -44,4 +44,23 @@
   .muted {
     @apply text-sm leading-6 text-ink/65;
   }
+
+  /* Google Maps PlaceAutocompleteElement styling */
+  gmp-place-autocomplete-input {
+    @apply rounded-lg;
+  }
+
+  gmp-place-autocomplete-input input {
+    @apply rounded-lg;
+  }
+
+  gmp-place-autocomplete-input input:hover {
+    background-color: #ffffff !important;
+  }
+
+  /* Google Places predictions hover */
+  [role="option"]:hover {
+    background-color: #ffffff !important;
+    color: inherit;
+  }
 }

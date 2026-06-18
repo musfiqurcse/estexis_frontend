@@ -1,13 +1,11 @@
 import { ArrowRight, BadgeCheck, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { categories, properties } from "../data/properties";
 import { useTranslation } from "../i18n";
-import { PropertyCard } from "../components/PropertyCard";
 import { SearchBar } from "../components/SearchBar";
+import { categoryCards } from "../lib/listingUtils";
 
 export function HomePage() {
   const { t } = useTranslation();
-  const popularAreas = t("home.popularAreas");
   const reasons = [
     { icon: ShieldCheck, key: "home.trustVerified" },
     { icon: Globe2, key: "home.trustLanguage" },
@@ -31,16 +29,6 @@ export function HomePage() {
             <h1 className="text-4xl font-semibold leading-tight md:text-6xl">{t("home.title")}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/82 md:text-lg">{t("home.subtitle")}</p>
           </div>
-          <div className="hidden rounded-lg border border-white/15 bg-white/10 p-5 backdrop-blur lg:block">
-            <p className="text-sm text-white/75">{t("home.destinations")}</p>
-            <div className="mt-4 space-y-3 text-lg font-semibold">
-              {Array.isArray(popularAreas) ? (
-                popularAreas.map((area) => <p key={area}>{area}</p>)
-              ) : (
-                <p>{t("data.p1Location")}</p>
-              )}
-            </div>
-          </div>
           <div className="lg:col-span-2">
             <SearchBar />
           </div>
@@ -56,23 +44,11 @@ export function HomePage() {
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-          {categories.map((category) => (
-            <Link key={category.key} to="/properties" className="group overflow-hidden rounded-lg border border-ink/10 bg-white">
-              <img className="h-32 w-full object-cover transition group-hover:scale-105" src={category.image} alt={t(`categories.${category.key}`)} />
-              <p className="p-4 text-sm font-semibold">{t(`categories.${category.key}`)}</p>
+          {categoryCards.map((category) => (
+            <Link key={category.key} to={`/properties?asset_type=${category.key}&page=1&page_size=20`} className="group overflow-hidden rounded-lg border border-ink/10 bg-white">
+              <img className="h-32 w-full object-cover transition group-hover:scale-105" src={category.image} alt={category.label} />
+              <p className="p-4 text-sm font-semibold">{category.label}</p>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="page-shell py-4">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <h2 className="section-title">{t("home.featured")}</h2>
-          <Link to="/properties" className="text-sm font-semibold text-forest hover:text-ink">{t("common.viewAll")}</Link>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {properties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
           ))}
         </div>
       </section>

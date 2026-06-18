@@ -6,6 +6,7 @@ import { AdminLoginPage } from "./pages/admin/LoginPage";
 import { AdminDashboardPage } from "./pages/admin/DashboardPage";
 import { AdminBlogPage } from "./pages/admin/BlogPage";
 import { KycReviewPage } from "./pages/admin/KycReviewPage";
+import { ListingManagementPage } from "./pages/admin/ListingManagementPage";
 import { UserManagementPage } from "./pages/admin/UserManagementPage";
 import { BlogListPage } from "./pages/BlogListPage";
 import { BlogDetailPage } from "./pages/BlogDetailPage";
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="kyc" element={<KycReviewPage />} />
+          <Route path="listings" element={<ListingManagementPage />} />
           <Route path="blog" element={<AdminBlogPage />} />
         </Route>
       </Route>

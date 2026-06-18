@@ -271,3 +271,139 @@ export function unpublishBlogPost(postId) {
 export function rejectBlogPost(postId) {
   return adminRequest(`/api/v1/admin/blog/${postId}/reject`, { method: "PATCH" });
 }
+
+function appendQueryParams(path, params = {}) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") return;
+    if (Array.isArray(value)) {
+      value.filter(Boolean).forEach((item) => searchParams.append(key, item));
+      return;
+    }
+    searchParams.set(key, String(value));
+  });
+
+  const query = searchParams.toString();
+  return query ? `${path}?${query}` : path;
+}
+
+export function listAdminListings(params = {}) {
+  return adminRequest(appendQueryParams("/api/v1/admin/listings", params));
+}
+
+export function getAdminListing(listingId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}`);
+}
+
+export function createAdminListing(data) {
+  return adminRequest("/api/v1/admin/listings", {
+    method: "POST",
+    body: data,
+  });
+}
+
+export function updateListing(listingId, data) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}`, {
+    method: "PATCH",
+    body: data,
+  });
+}
+
+export function adminSubmitListing(listingId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/submit`, { method: "POST" });
+}
+
+export function adminEnrichListing(listingId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/enrich`, { method: "POST" });
+}
+
+export function adminUploadListingMedia(listingId, mediaType, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return adminRequest(
+    appendQueryParams(`/api/v1/admin/listings/${listingId}/media`, { media_type: mediaType }),
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+}
+
+export function adminDeleteListingMedia(listingId, mediaId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/media/${mediaId}`, { method: "DELETE" });
+}
+
+export function adminUploadListingDocument(listingId, documentType, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return adminRequest(
+    appendQueryParams(`/api/v1/admin/listings/${listingId}/documents`, { document_type: documentType }),
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+}
+
+export function adminDeleteListingDocument(listingId, documentId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/documents/${documentId}`, { method: "DELETE" });
+}
+
+export function adminApproveListing(listingId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/approve`, { method: "POST" });
+}
+
+export function adminPublishListing(listingId) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/publish`, { method: "POST" });
+}
+
+export function adminRejectListing(listingId, reason, templateId = "") {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/reject`, {
+    method: "POST",
+    body: {
+      reason,
+      ...(templateId ? { template_id: templateId } : {}),
+    },
+  });
+}
+
+export function adminRequestListingChanges(listingId, notes) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/request-changes`, {
+    method: "POST",
+    body: { notes },
+  });
+}
+
+export function adminUnpublishListing(listingId, reason) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/unpublish`, {
+    method: "POST",
+    body: { reason },
+  });
+}
+
+export function adminUpdateDocumentVerification(listingId, documentId, verificationStatus) {
+  return adminRequest(`/api/v1/admin/listings/${listingId}/documents/${documentId}/verification`, {
+    method: "PATCH",
+    body: { verification_status: verificationStatus },
+  });
+}
+
+export function adminBulkApproveListings(listingIds) {
+  return adminRequest("/api/v1/admin/listings/bulk-approve", {
+    method: "POST",
+    body: { listing_ids: listingIds },
+  });
+}
+
+export function adminAssignListing(listingId, adminId) {
+  return adminRequest(appendQueryParams(`/api/v1/admin/listings/${listingId}/assign`, { admin_id: adminId }), {
+    method: "PATCH",
+  });
+}
+
+export function archiveListing(listingId) {
+  return adminRequest(`/api/v1/listings/${listingId}/archive`, { method: "POST" });
+}

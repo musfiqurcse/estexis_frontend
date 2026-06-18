@@ -16,7 +16,7 @@ const navLinks = [
   { to: "/private/admin/dashboard", label: "Overview", icon: LayoutDashboard },
   { to: "/private/admin/users", label: "User Management", icon: UserCog },
   { to: "/private/admin/kyc", label: "KYC Reviews", icon: ShieldCheck },
-  { to: "#properties", label: "Properties", icon: Building2 },
+  { to: "/private/admin/listings", label: "Listings", icon: Building2 },
   { to: "#inquiries", label: "Inquiries", icon: FileText },
   { to: "/private/admin/blog", label: "Blog Content", icon: Newspaper },
   { to: "#analytics", label: "Analytics", icon: BarChart2 },
