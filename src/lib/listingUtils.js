@@ -156,17 +156,19 @@ export function parseDecimal(value) {
   return Number.isFinite(number) ? number : null;
 }
 
-export function formatMoney(amount, currencyCode = "EUR", period = "") {
+export function formatMoney(amount, _currencyCode = "BDT", period = "") {
   const value = parseDecimal(amount);
   if (value === null) return "Price on request";
 
-  const currency = currencyCode || "EUR";
-  const formatted = new Intl.NumberFormat("en-US", {
+  const formatted = new Intl.NumberFormat("en-BD", {
     style: "currency",
-    currency,
+    currency: "BDT",
     currencyDisplay: "narrowSymbol",
     maximumFractionDigits: value % 1 === 0 ? 0 : 2,
-  }).format(value);
+  })
+    .formatToParts(value)
+    .map((part) => (part.type === "currency" ? "৳" : part.value))
+    .join("");
 
   if (period === "monthly") return `${formatted}/mo`;
   if (period === "yearly") return `${formatted}/yr`;

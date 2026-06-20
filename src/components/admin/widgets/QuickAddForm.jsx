@@ -50,7 +50,7 @@ export function QuickAddForm() {
             <input
               className="input-field"
               type="number"
-              placeholder={`Price (${currencySymbols.EUR})`}
+              placeholder={`Price (${currencySymbols.BDT})`}
               value={form.price}
               onChange={set("price")}
               required

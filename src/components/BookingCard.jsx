@@ -7,7 +7,7 @@ export function BookingCard({ property, checkout = false }) {
   const closingCost = price ? price * 0.04 : null;
   const registrationFee = price ? price * 0.015 : null;
   const total = price ? price + closingCost + registrationFee : null;
-  const currencyCode = property?.currency_code || "EUR";
+  const currencyCode = "BDT";
 
   return (
     <aside className="rounded-lg border border-ink/10 bg-white p-5 shadow-soft lg:sticky lg:top-28">

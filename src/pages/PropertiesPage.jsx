@@ -1,4 +1,4 @@
-import { AlertCircle, Loader2, Map, SlidersHorizontal } from "lucide-react";
+import { AlertCircle, Loader2, Map, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FilterSidebar } from "../components/FilterSidebar";
@@ -43,6 +43,7 @@ export function PropertiesPage() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const filters = useMemo(() => readFilters(searchParams), [searchParams]);
   const page = Number(filters.page || 1);
@@ -77,14 +78,33 @@ export function PropertiesPage() {
     };
   }, [filters]);
 
+  useEffect(() => {
+    if (!mobileFiltersOpen) return undefined;
+
+    function closeOnEscape(event) {
+      if (event.key === "Escape") setMobileFiltersOpen(false);
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileFiltersOpen]);
+
   function applyFilters(event) {
     event.preventDefault();
     setSearchParams(toSearchParams({ ...draftFilters, page: 1, page_size: pageSize || 20 }));
+    setMobileFiltersOpen(false);
   }
 
   function resetFilters() {
     setDraftFilters({});
     setSearchParams(toSearchParams({ page: 1, page_size: pageSize || 20 }));
+    setMobileFiltersOpen(false);
   }
 
   function goToPage(nextPage) {
@@ -99,7 +119,13 @@ export function PropertiesPage() {
       </div>
       <SearchBar compact />
       <div className="mt-8 flex items-center justify-between gap-3">
-        <button className="btn-secondary lg:hidden">
+        <button
+          type="button"
+          className="btn-secondary lg:hidden"
+          aria-controls="mobile-filter-sidebar"
+          aria-expanded={mobileFiltersOpen}
+          onClick={() => setMobileFiltersOpen(true)}
+        >
           <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
           {t("properties.mobileFilters")}
         </button>
@@ -110,6 +136,37 @@ export function PropertiesPage() {
           </select>
         </label>
       </div>
+
+      {mobileFiltersOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            aria-label="Close filters"
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+          <aside
+            id="mobile-filter-sidebar"
+            className="absolute inset-y-0 left-0 w-[min(90vw,22rem)] overflow-y-auto bg-linen p-4 shadow-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Property filters"
+          >
+            <div className="mb-3 flex justify-end">
+              <button
+                type="button"
+                className="grid h-10 w-10 place-items-center rounded-lg border border-ink/10 bg-white text-ink/65 hover:text-ink"
+                aria-label="Close filters"
+                onClick={() => setMobileFiltersOpen(false)}
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+            <FilterSidebar values={draftFilters} onChange={setDraftFilters} onApply={applyFilters} onReset={resetFilters} />
+          </aside>
+        </div>
+      )}
+
       <div className="mt-6 grid gap-6 lg:grid-cols-[280px_1fr_320px]">
         <div className="hidden lg:block">
           <FilterSidebar values={draftFilters} onChange={setDraftFilters} onApply={applyFilters} onReset={resetFilters} />

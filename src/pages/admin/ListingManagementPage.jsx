@@ -98,7 +98,7 @@ const blankListingForm = {
   latitude: "",
   longitude: "",
   hide_exact_address: false,
-  currency_code: "EUR",
+  currency_code: "BDT",
   price_amount: "",
   price_period: "total",
   service_charge_amount: "",
@@ -175,6 +175,7 @@ function toListingForm(listing) {
     ...Object.fromEntries(
       Object.keys(blankListingForm).map((key) => [key, listing?.[key] === null || listing?.[key] === undefined ? blankListingForm[key] : listing[key]]),
     ),
+    currency_code: "BDT",
   };
 }
 
@@ -187,7 +188,7 @@ function toListingCopy(listing) {
 }
 
 function toListingPayload(form, includeEmpty = false) {
-  const payload = {};
+  const payload = { currency_code: "BDT" };
 
   Object.entries(form).forEach(([key, value]) => {
     if (!includeEmpty && (value === "" || value === undefined)) return;
@@ -195,7 +196,7 @@ function toListingPayload(form, includeEmpty = false) {
       payload[key] = Number(value);
       return;
     }
-    payload[key] = value;
+    payload[key] = key === "currency_code" ? "BDT" : value;
   });
 
   return cleanListingPayload(payload);
@@ -551,7 +552,7 @@ function ListingWizard({ initialListing, onClose, onSaved }) {
                   <input className="input-field" value={form.language_code} maxLength={10} onChange={(event) => updateField("language_code", event.target.value)} />
                 </Field>
                 <Field label="Currency">
-                  <input className="input-field uppercase" value={form.currency_code} maxLength={3} onChange={(event) => updateField("currency_code", event.target.value.toUpperCase())} />
+                  <input className="input-field uppercase" value="BDT" readOnly />
                 </Field>
               </div>
             </section>
