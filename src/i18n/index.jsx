@@ -6,8 +6,8 @@ import { en } from "./en";
 
 const dictionaries = { en, bn, ar, de };
 const labels = { en: "English", bn: "বাংলা", ar: "العربية", de: "Deutsch" };
-const currencyLabels = { BDT: "BDT" };
-const currencySymbols = { BDT: "৳" };
+const currencyLabels = { BDT: "BDT", EUR: "EUR", AED: "AED", USD: "USD" };
+const currencySymbols = { BDT: "৳", EUR: "€", AED: "د.إ", USD: "$" };
 const rtlLanguages = new Set(["ar"]);
 const localeMap = { en: "en-US", bn: "bn-BD", ar: "ar-SA", de: "de-DE" };
 const I18nContext = createContext(null);
@@ -16,14 +16,15 @@ function getPathValue(source, path) {
   return path.split(".").reduce((value, part) => value?.[part], source);
 }
 
-function formatWithSymbol(locale, amount) {
+function formatWithSymbol(locale, amount, currency = "BDT", options = {}) {
   const formatter = new Intl.NumberFormat(locale, {
     style: "currency",
-    currency: "BDT",
+    currency,
     currencyDisplay: "narrowSymbol",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: options.maximumFractionDigits ?? 0,
   });
 
+  if (currency !== "BDT") return formatter.format(amount);
   return formatter
     .formatToParts(amount)
     .map((part) => (part.type === "currency" ? currencySymbols.BDT : part.value))
@@ -55,9 +56,10 @@ export function I18nProvider({ children }) {
       setCurrency: () => {},
       t: (key) => getPathValue(dictionaries[safeLanguage], key) || getPathValue(en, key) || key,
       convertCurrencyValue: (amount) => amount,
-      formatCurrency: (amount) => formatWithSymbol(locale, amount),
+      formatCurrency: (amount, currencyCode = "BDT", options = {}) =>
+        formatWithSymbol(locale, amount, currencyCode, options),
       formatDate: (date) => new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" }).format(new Date(date)),
-      formatNumber: (value) => new Intl.NumberFormat(locale).format(value),
+      formatNumber: (value, options = {}) => new Intl.NumberFormat(locale, options).format(value),
     };
   }, [safeLanguage, direction]);
 

@@ -407,3 +407,38 @@ export function adminAssignListing(listingId, adminId) {
 export function archiveListing(listingId) {
   return adminRequest(`/api/v1/listings/${listingId}/archive`, { method: "POST" });
 }
+
+export function listAdminInvestmentPresets() {
+  return adminRequest("/api/v1/admin/investment-presets?include_archived=true");
+}
+
+export function createAdminInvestmentPreset(data) {
+  return adminRequest("/api/v1/admin/investment-presets", {
+    method: "POST",
+    body: data,
+  });
+}
+
+export function updateAdminInvestmentPreset(publicId, data) {
+  return adminRequest(`/api/v1/admin/investment-presets/${encodeURIComponent(publicId)}`, {
+    method: "PATCH",
+    body: data,
+  });
+}
+
+export function archiveAdminInvestmentPreset(publicId) {
+  return adminRequest(`/api/v1/admin/investment-presets/${encodeURIComponent(publicId)}`, {
+    method: "DELETE",
+  });
+}
+
+export function listAdminSubscriptionPlans() {
+  return adminRequest("/api/v1/admin/subscription-plans");
+}
+
+export function updateAdminSubscriptionPlan(planId, data) {
+  return adminRequest(`/api/v1/admin/subscription-plans/${encodeURIComponent(planId)}`, {
+    method: "PATCH",
+    body: data,
+  });
+}

@@ -1,4 +1,4 @@
-import { AlertCircle, ArrowLeft, Bath, BedDouble, BadgeCheck, Loader2, MapPin, Ruler } from "lucide-react";
+import { AlertCircle, ArrowLeft, BarChart3, Bath, BedDouble, BadgeCheck, Loader2, MapPin, Ruler } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BookingCard } from "../components/BookingCard";
@@ -97,6 +97,14 @@ export function PropertyDetailsPage() {
 
   const location = getListingLocation(property);
   const title = property.title || `${formatLabel(property.asset_type)} in ${property.city || "selected location"}`;
+  const investorSearch = new URLSearchParams({
+    listing: property.public_id,
+    currency: property.currency_code || "BDT",
+    ...(property.price_amount !== null && property.price_amount !== undefined
+      ? { price: String(property.price_amount) }
+      : {}),
+    title,
+  }).toString();
   const detailFields = [
     ["Purpose", formatLabel(property.listing_purpose)],
     ["Category", formatLabel(property.property_category)],
@@ -165,7 +173,19 @@ export function PropertyDetailsPage() {
             )}
           </div>
         </section>
-        <BookingCard property={property} />
+        <aside className="space-y-4">
+          <Link
+            to={`/investor?${investorSearch}`}
+            className="flex items-center gap-3 border border-forest bg-forest p-4 text-white transition hover:bg-[#0f3d33]"
+          >
+            <BarChart3 className="h-5 w-5 flex-none" aria-hidden="true" />
+            <span>
+              <span className="block text-sm font-semibold">{t("details.analyzeInvestment")}</span>
+              <span className="mt-0.5 block text-xs text-white/70">{t("details.investorHint")}</span>
+            </span>
+          </Link>
+          <BookingCard property={property} />
+        </aside>
       </div>
       {(similarLoading || similar.length > 0) && <section className="mt-12">
         <h2 className="mb-6 section-title">{t("details.similar")}</h2>
