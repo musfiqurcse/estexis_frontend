@@ -16,6 +16,10 @@ import { HomePage } from "./pages/HomePage";
 import { LegalPage } from "./pages/LegalPage";
 import { PropertyDetailsPage } from "./pages/PropertyDetailsPage";
 import { PropertiesPage } from "./pages/PropertiesPage";
+import { BuyerLoginPage } from "./pages/BuyerLoginPage";
+import { InvestorWorkspacePage } from "./pages/InvestorWorkspacePage";
+import { SharedScenarioPage } from "./pages/SharedScenarioPage";
+import { InvestorSettingsPage } from "./pages/admin/InvestorSettingsPage";
 
 export default function App() {
   return (
@@ -28,6 +32,9 @@ export default function App() {
         <Route path="/inquiry/:id" element={<BookingPage />} />
         <Route path="/booking/:id" element={<BookingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/investor" element={<InvestorWorkspacePage />} />
+        <Route path="/investor/shared/:token" element={<SharedScenarioPage />} />
+        <Route path="/login" element={<BuyerLoginPage />} />
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/terms-and-conditions" element={<LegalPage type="terms" />} />
@@ -45,6 +52,7 @@ export default function App() {
           <Route path="kyc" element={<KycReviewPage />} />
           <Route path="listings" element={<ListingManagementPage />} />
           <Route path="blog" element={<AdminBlogPage />} />
+          <Route path="investor-settings" element={<InvestorSettingsPage />} />
         </Route>
       </Route>
     </Routes>

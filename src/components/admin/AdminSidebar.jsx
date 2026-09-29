@@ -9,6 +9,7 @@ import {
   LogOut,
   ShieldCheck,
   UserCog,
+  SlidersHorizontal,
 } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 
@@ -19,6 +20,7 @@ const navLinks = [
   { to: "/private/admin/listings", label: "Listings", icon: Building2 },
   { to: "#inquiries", label: "Inquiries", icon: FileText },
   { to: "/private/admin/blog", label: "Blog Content", icon: Newspaper },
+  { to: "/private/admin/investor-settings", label: "Investor Product", icon: SlidersHorizontal },
   { to: "#analytics", label: "Analytics", icon: BarChart2 },
   { to: "#settings", label: "Settings", icon: Settings },
 ];

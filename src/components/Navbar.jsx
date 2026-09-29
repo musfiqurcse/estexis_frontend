@@ -1,15 +1,17 @@
-import { Heart, MapPin, Menu, User, X } from "lucide-react";
+import { BarChart3, Heart, LogOut, MapPin, Menu, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { useVisitorLocation } from "../hooks/useVisitorLocation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useBuyerAuth } from "../context/BuyerAuthContext";
 // import mainLogo from "../assets/main_logo.svg";
 import mainLogo from "../assets/Layer_1.svg";
 
 export function Navbar() {
   const { t } = useTranslation();
   const { city, loading } = useVisitorLocation();
+  const { isAuthenticated, logout } = useBuyerAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -53,6 +55,9 @@ export function Navbar() {
           <NavLink to="/blog" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
             Blog
           </NavLink>
+          <NavLink to="/investor" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
+            {t("nav.investor")}
+          </NavLink>
           <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "text-forest" : "text-ink/70 hover:text-forest")}>
             {t("nav.dashboard")}
           </NavLink>
@@ -67,10 +72,17 @@ export function Navbar() {
             <Heart className="h-4 w-4" aria-hidden="true" />
             {t("nav.saved")}
           </Link>
-          <button className="hidden btn-primary sm:inline-flex">
-            <User className="h-4 w-4" aria-hidden="true" />
-            {t("nav.login")}
-          </button>
+          {isAuthenticated ? (
+            <button type="button" className="hidden btn-primary sm:inline-flex" onClick={logout}>
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              {t("nav.logout")}
+            </button>
+          ) : (
+            <Link to="/login" className="hidden btn-primary sm:inline-flex">
+              <User className="h-4 w-4" aria-hidden="true" />
+              {t("nav.login")}
+            </Link>
+          )}
           <button
             type="button"
             className="grid h-10 w-10 place-items-center rounded-lg border border-ink/10 bg-white md:hidden"
@@ -118,6 +130,10 @@ export function Navbar() {
               <NavLink to="/" end className={mobileLinkClass}>Home</NavLink>
               <NavLink to="/properties" className={mobileLinkClass}>{t("nav.homes")}</NavLink>
               <NavLink to="/blog" className={mobileLinkClass}>Blog</NavLink>
+              <NavLink to="/investor" className={mobileLinkClass}>
+                <BarChart3 className="mr-2 h-4 w-4" aria-hidden="true" />
+                {t("nav.investor")}
+              </NavLink>
               <NavLink to="/dashboard" className={mobileLinkClass}>{t("nav.dashboard")}</NavLink>
             </nav>
 
@@ -130,6 +146,17 @@ export function Navbar() {
                 <Heart className="h-4 w-4" aria-hidden="true" />
                 {t("nav.saved")}
               </Link>
+              {isAuthenticated ? (
+                <button type="button" className="btn-primary w-full" onClick={logout}>
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
+                  {t("nav.logout")}
+                </button>
+              ) : (
+                <Link to="/login" className="btn-primary w-full" onClick={() => setSidebarOpen(false)}>
+                  <User className="h-4 w-4" aria-hidden="true" />
+                  {t("nav.login")}
+                </Link>
+              )}
             </div>
           </aside>
         </div>
